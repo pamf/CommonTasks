@@ -1,10 +1,9 @@
 # CommonTasks
-Build | Status | Last Commit | Latest Release
---- | --- | --- | ---
-Develop | [![Build status dev](https://ci.appveyor.com/api/projects/status/9yynk81k3k05nasp/branch/develop?svg=true)](https://ci.appveyor.com/project/automatedlab/commontasks) | [![GitHub last commit](https://img.shields.io/github/last-commit/AutomatedLab/commontasks/dev.svg)](https://github.com/AutomatedLab/commontasks/tree/dev/)
-Master | [![Build status](https://ci.appveyor.com/api/projects/status/9yynk81k3k05nasp/branch/master?svg=true)](https://ci.appveyor.com/project/automatedlab/commontasks) | [![GitHub last commit](https://img.shields.io/github/last-commit/AutomatedLab/commontasks/master.svg)](https://github.com/AutomatedLab/commontasks/tree/master/) | [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/commontasks.svg)](https://www.powershellgallery.com/packages/CommonTasks/)
+Build | Status | Last Commit | Latest Release | Lastest Preview Release
+--- | --- | --- | --- | ---
+Main | [![Build status](https://dev.azure.com/dsccommunity/CommonTasks/_apis/build/status/dsccommunity.CommonTasks?branchName=main)](https://dev.azure.com/dsccommunity/CommonTasks/_build) | [![GitHub last commit](https://img.shields.io/github/last-commit/dsccommunity/commontasks/main.svg)](https://github.com/dsccommunity/commontasks/tree/master/) | [![PowerShell Gallery](https://img.shields.io/powershellgallery/v/commontasks.svg)](https://www.powershellgallery.com/packages/CommonTasks/) | [![PowerShell Gallery (with prereleases)](https://img.shields.io/powershellgallery/vpre/CommonTasks?label=CommonTasks%20Preview)](https://www.powershellgallery.com/packages/CommonTasks/)
 
-[![GitHub issues](https://img.shields.io/github/issues/AutomatedLab/commontasks.svg)](https://github.com/AutomatedLab/commontasks/issues)
+[![GitHub issues](https://img.shields.io/github/issues/dsccommunity/commontasks.svg)](https://github.com/dsccommunity/commontasks/issues)
 [![PowerShell Gallery](https://img.shields.io/powershellgallery/dt/commontasks.svg)](https://www.powershellgallery.com/packages/commontasks/)
 
 This project is intended to suggest a new structure for sharing DSC Configuration, taking most of the ideas from [Michael Greene](https://github.com/mgreenegit/) in [the dscconfigurations repo](https://github.com/powershell/dscconfigurations).
@@ -207,3 +206,7 @@ The re-usable configuration itself is declared in the ps1, the metadata and depe
 - ConfigurationData: the default/example configuration data, organised in test suite/scenarios
 - Validation: the pester tests used to validate the configuration, per test suite/scenario
 - the examples of re-using that shared configuration, per test suite/scenario
+
+## YAML Reference Documentation
+
+The [YAML reference documentation](./doc/README.adoc) is located in the ./doc subfolder of this repository.
