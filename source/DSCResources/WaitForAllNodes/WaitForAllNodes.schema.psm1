@@ -5,6 +5,7 @@ configuration WaitForAllNodes {
         $Items
     )
 
+    Import-DscResource -ModuleName PSDesiredStateConfiguration
     <#
     NodeName = [string[]]
     ResourceName = [string]
@@ -15,7 +16,8 @@ configuration WaitForAllNodes {
     [ThrottleLimit = [UInt32]]
     #>
 
-    foreach ($item in $items) {
+    foreach ($item in $items)
+    {
         $executionName = $item.ResourceName
 
         (Get-DscSplattedResource -ResourceName WaitForAll -ExecutionName $executionName -Properties $item -NoInvoke).Invoke($item)

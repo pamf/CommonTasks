@@ -8,18 +8,21 @@
         }
     }
 
-    'powershell-yaml'            = 'latest'
     InvokeBuild                  = 'latest'
     PSScriptAnalyzer             = 'latest'
-    Pester                       = '4.10.1'
+    Pester                       = 'latest'
     Plaster                      = 'latest'
     ModuleBuilder                = 'latest'
     ChangelogManagement          = 'latest'
     Sampler                      = 'latest'
     'Sampler.GitHubTasks'        = 'latest'
-    Datum                        = '0.39.0'
-    'Datum.ProtectedData'        = '0.0.1'
-    DscBuildHelpers              = '0.0.42'
+    Datum                        = 'latest'
+    'Datum.ProtectedData'        = 'latest'
+    DscBuildHelpers              = 'latest'
+    'DscResource.Test'           = 'latest'
+    MarkdownLinkCheck            = 'latest'
+    'DscResource.AnalyzerRules'  = 'latest'
+    'DscResource.DocGenerator'   = 'latest'
 
     #DSC Resources
     xPSDesiredStateConfiguration = '9.1.0'
@@ -41,7 +44,7 @@
     GPRegistryPolicyDsc          = '1.2.0'
     AuditPolicyDsc               = '1.4.0.0'
     SharePointDSC                = '4.8.0'
-    xExchange                    = '1.32.0'
+    xExchange                    = '1.33.0'
     SqlServerDsc                 = '15.2.0'
     UpdateServicesDsc            = '1.2.1'
     xWindowsEventForwarding      = '1.0.0.0'
@@ -53,5 +56,12 @@
     FileSystemDsc                = '1.1.1'
     PackageManagement            = '1.4.7'
     PowerShellGet                = '2.2.5'
-    ConfigMgrCBDsc               = '2.1.0-preview0006' # Gallery version has extremely old SQL dependencies
+    ConfigMgrCBDsc               = '3.0.0'
+    MmaDsc                       = '1.3.0'
+    CertificateDsc               = '5.1.0'
+    xRobocopy                    = '2.0.0.0'
+    VSTSAgent                    = '2.0.12-develop'
+    FileContentDsc               = '1.3.0.151'
+    xRemoteDesktopSessionHost    = '2.1.0'
+    cScom                        = '1.0.0'
 }

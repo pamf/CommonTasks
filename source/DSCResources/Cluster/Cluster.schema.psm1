@@ -36,6 +36,14 @@ configuration Cluster
         $Join,
 
         [Parameter()]
+        [int]
+        $WaitForClusterRetryIntervalSec = 10,
+
+        [Parameter()]
+        [int]
+        $WaitForClusterRetryCount = 60,
+
+        [Parameter()]
         [string]
         $DomainName,
 
@@ -48,43 +56,61 @@ configuration Cluster
     Import-DscResource -ModuleName xFailoverCluster
     Import-DscResource -ModuleName ActiveDirectoryDsc
 
-    if ($Join) {
-        xWaitForCluster WaitForCluster {
+    if ($Join)
+    {
+        xWaitForCluster WaitForCluster
+        {
             Name             = $Name
-            RetryIntervalSec = 10
-            RetryCount       = 60
+            RetryIntervalSec = $WaitForClusterRetryIntervalSec
+            RetryCount       = $WaitForClusterRetryCount
         }
 
-        xCluster JoinSecondNodeToCluster {
+        xCluster JoinSecondNodeToCluster
+        {
             Name                          = $Name
             DomainAdministratorCredential = $DomainAdministratorCredential
             DependsOn                     = '[xWaitForCluster]WaitForCluster'
         }
     }
-    else {
-        xCluster NewCluster {
+    else
+    {
+        $parameters = @{
             Name                          = $Name
             DomainAdministratorCredential = $DomainAdministratorCredential
             StaticIPAddress               = $StaticIPAddress
         }
+
+        if ($IgnoreNetwork.Count -gt 0)
+        {
+            $parameters['IgnoreNetwork'] = $IgnoreNetwork
+        }
+
+        (Get-DscSplattedResource -ResourceName xCluster -ExecutionName NewCluster -Properties $parameters -NoInvoke).Invoke($parameters)
     }
 
-    foreach ($disk in $Disks) {
-        xClusterDisk $disk.Number {
+    foreach ($disk in $Disks)
+    {
+        xClusterDisk $disk.Number
+        {
             Number = $disk.Number
             Label  = $disk.Label
         }
     }
 
-    if (-not $Join) {
-        if ($QuorumType -eq 'NodeMajority') {
-            xClusterQuorum ClusterQuorum {
+    if (-not $Join)
+    {
+        if ($QuorumType -eq 'NodeMajority')
+        {
+            xClusterQuorum ClusterQuorum
+            {
                 IsSingleInstance = 'Yes'
                 Type             = $QuorumType
             }
         }
-        else {
-            xClusterQuorum ClusterQuorum {
+        elseif ($QuorumResource)
+        {
+            xClusterQuorum ClusterQuorum
+            {
                 IsSingleInstance = 'Yes'
                 Type             = $QuorumType
                 Resource         = $QuorumResource
@@ -92,10 +118,12 @@ configuration Cluster
         }
     }
 
-    if ($OrganizationalUnitDn) {
+    if ($OrganizationalUnitDn)
+    {
         #This is required in order to create cluster roles. When creating a cluster role
         #the cluster service is creating the needed computer accounts.
-        ADObjectPermissionEntry GrantAccessToClusterAccount {
+        ADObjectPermissionEntry GrantAccessToClusterAccount
+        {
             Path                               = $OrganizationalUnitDn
             IdentityReference                  = "$DomainName\$($Name)$"
             ActiveDirectoryRights              = 'GenericAll'

@@ -2,13 +2,15 @@ configuration AddsOrgUnitsAndGroups
 {
     param
     (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [String]
         $DomainDN,
 
+        [Parameter()]
         [Hashtable[]]
         $OrgUnits,
 
+        [Parameter()]
         [Hashtable[]]
         $Groups
     )
@@ -26,19 +28,20 @@ configuration AddsOrgUnitsAndGroups
     }
 
     $script:ouDependencies = @()
-    
+
     function Get-OrgUnitSplat
     {
         param
         (
-            [Parameter(Mandatory)]
+            [Parameter(Mandatory = $true)]
             [object]
             $Object,
 
-            [Parameter(Mandatory)]
+            [Parameter(Mandatory = $true)]
             [string]
             $ParentPath,
 
+            [Parameter()]
             [switch]
             $SkipDepend
         )
@@ -53,11 +56,11 @@ configuration AddsOrgUnitsAndGroups
         }
 
         $Object.Path = $ParentPath
-        $script:ouDependencies += "[ADOrganizationalUnit]$($ouPath -Replace ',|=')"
-        
+        $script:ouDependencies += "[ADOrganizationalUnit]$($ouPath -Replace '\W')"
+
         if ($SkipDepend)
         {
-            ADOrganizationalUnit ($ouPath -Replace ',|=')
+            ADOrganizationalUnit ($ouPath -Replace '\W')
             {
                 Name      = $Object.Name
                 Path      = $Object.Path
@@ -66,15 +69,15 @@ configuration AddsOrgUnitsAndGroups
         }
         else
         {
-            ADOrganizationalUnit ($ouPath -Replace ',|=')
+            ADOrganizationalUnit ($ouPath -Replace '\W')
             {
                 Name      = $Object.Name
                 Path      = $Object.Path
-                DependsOn = "[ADOrganizationalUnit]$($ParentPath -Replace ',|=')"
+                DependsOn = "[ADOrganizationalUnit]$($ParentPath -Replace '\W')"
             }
-        }        
+        }
     }
-    
+
     foreach ($ou in $OrgUnits)
     {
         if ( [string]::IsNullOrWhitespace($ou.Path) )
@@ -92,22 +95,22 @@ configuration AddsOrgUnitsAndGroups
 
     $dependencies = @()
 
-    foreach( $group in $Groups )
+    foreach ($group in $Groups)
     {
         # remove case sensitivity from hashtables
-        $group = @{}+$group
+        $group = @{} + $group
 
-        if( $group.GroupScope -eq "DomainLocal" )
+        if ($group.GroupScope -eq 'DomainLocal')
         {
             $dependencies += "[ADGroup]'$($group.GroupName)'"
             $group.DependsOn = $ouDependencies
             $group.Path = '{0},{1}' -f $group.Path, $DomainDn
         }
-        elseif( ($group.GroupScope -eq "Global") -or (-not [string]::IsNullOrWhiteSpace($group.Path)) )
+        elseif (($group.GroupScope -eq 'Global') -or (-not [string]::IsNullOrWhiteSpace($group.Path)))
         {
             $group.Path = '{0},{1}' -f $group.Path, $DomainDn
         }
 
-        (Get-DscSplattedResource -ResourceName ADGroup -ExecutionName "'$($group.GroupName)'" -Properties $group -NoInvoke).Invoke($group)
+        (Get-DscSplattedResource -ResourceName ADGroup -ExecutionName $group.GroupName -Properties $group -NoInvoke).Invoke($group)
     }
 }

@@ -15,7 +15,7 @@
 
 [cols="1,3a" options="autowidth" caption=]
 |===
-| Source         | https://github.com/dsccommunity/CommonTasks/tree/dev/CommonTasks/DscResources/WindowsOptionalFeatures
+| Source         | https://github.com/dsccommunity/CommonTasks/tree/main/source/DSCResources/WindowsOptionalFeatures
 | DSC Resource   | https://docs.microsoft.com/en-us/powershell/module/psdesiredstateconfiguration/?view=powershell-5.1[PSDesiredStateConfiguration]
 | Documentation  | https://docs.microsoft.com/de-de/powershell/scripting/dsc/reference/resources/windows/windowsoptionalfeatureresource?view=powershell-5.1[WindowsOptionalFeature]
 |===
@@ -30,10 +30,10 @@
 | Description
 | Allowed Values
 
-| Name
+| Names
 | Mandatory
 | string
-| Indicates the name of the feature that you want to ensure is added or removed. 
+| Indicates the name of the feature that you want to ensure is added or removed.
   This is the same as the Name property from the Get-WindowsOptionalFeature cmdlet, and not the display name of the feature.
 | [+ \| -]<name>
 
@@ -61,8 +61,22 @@
 WindowsOptionalFeatures:
   RemoveFilesOnDisable: false
   NoWindowsUpdateCheck: false
-  Name:
-  - +TFTP 
+  Names:
+  - +TFTP
   - -TelnetClient
   - Hyper-V
+----
+
+
+.Recommended Lookup Options in `Datum.yml` (Excerpt)
+[source, yaml]
+----
+default_lookup_options: MostSpecific
+
+lookup_options:
+
+  WindowsOptionalFeatures:
+    merge_hash: deep
+  WindowsOptionalFeatures\Names:
+    merge_basetype_array: Unique
 ----

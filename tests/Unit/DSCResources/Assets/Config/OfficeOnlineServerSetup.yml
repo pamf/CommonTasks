@@ -1,0 +1,6 @@
+Path: C:\OfficeOnline\Setup.exe
+LanguagePacks:
+  - Language: de-de
+    BinaryDir: C:\de-de
+  - Language: en-us
+    BinaryDir: C:\en-us

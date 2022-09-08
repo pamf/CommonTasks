@@ -15,7 +15,7 @@
 
 [cols="1,3a" options="autowidth" caption=]
 |===
-| Source         | https://github.com/dsccommunity/CommonTasks/tree/dev/CommonTasks/DscResources/WindowsFeatures
+| Source         | https://github.com/dsccommunity/CommonTasks/tree/main/source/DSCResources/WindowsFeatures
 | DSC Resource   | https://docs.microsoft.com/en-us/powershell/module/psdesiredstateconfiguration/?view=powershell-5.1[PSDesiredStateConfiguration]
 | Documentation  | https://docs.microsoft.com/de-de/powershell/scripting/dsc/reference/resources/windows/windowsfeatureresource?view=powershell-5.1[WindowsFeature]
 |===
@@ -29,7 +29,7 @@
 | Description
 | Allowed Values
 
-| Name
+| Names
 | Mandatory
 | string
 | Indicates the name of the role or feature that you want to ensure is added or removed. This is the same as the Name property from the Get-WindowsFeature cmdlet, and not the display name of the role or feature.
@@ -42,10 +42,11 @@
 [source, yaml]
 ----
 WindowsFeatures:
-  Name:
+  Names:
+  - Hyper-V       # installs WindowsFeature Hyper-V
   - +DHCP         # installs WindowsFeature DHCP Server
   - -Web-Server   # removes WindowsFeature Web-Server (IIS)
-  - Hyper-V       # installs WindowsFeature Hyper-V
+  - *Web-Server   # installs WindowsFeature Web-Server (IIS) with all sub features.
 ----
 
 
@@ -58,6 +59,6 @@ lookup_options:
 
   WindowsFeatures:
     merge_hash: deep
-  WindowsFeatures\Name:
+  WindowsFeatures\Names:
     merge_basetype_array: Unique
 ----

@@ -80,10 +80,11 @@ configuration SharePointProvisioning
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
     Import-DscResource -ModuleName SharePointDSC
-    
+
     $PSBoundParameters.Add('Ensure', 'Present')
     $PSBoundParameters.Add('IsSingleInstance', 'Yes')
     $PSBoundParameters.Remove('InstanceName')
+    $PSBoundParameters.Remove('DependsOn')
     $PSBoundParameters.Remove('PsDscRunAsCredential')
     $PSBoundParameters.Remove('CentralAdminServerName')
 
@@ -91,10 +92,10 @@ configuration SharePointProvisioning
     {
         WaitForAll WaitForFarmCreation
         {
-            NodeName = $CentralAdminServerName
-            ResourceName = "[SPFarm]SharePointFarmCreate::[SharePointProvisioning]"
+            NodeName         = $CentralAdminServerName
+            ResourceName     = "[SPFarm]SharePointFarmCreate::[SharePointProvisioning]"
             RetryIntervalSec = 20
-            RetryCount = 180
+            RetryCount       = 180
         }
         $executionName = 'SharePointFarmJoin'
     }

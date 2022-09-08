@@ -1,4 +1,4 @@
-﻿
+
 Configuration ConfigurationManagerDeployment
 {
     [CmdletBinding()]
@@ -32,19 +32,19 @@ Configuration ConfigurationManagerDeployment
         [System.Nullable[UInt32]]
         $ConfigMgrVersion,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $AdkSetupExePath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $AdkWinPeSetupPath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $MdtMsiPath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string]
         $ConfigManagerSetupPath,
 
@@ -70,7 +70,15 @@ Configuration ConfigurationManagerDeployment
 
         [Parameter()]
         [string]
-        $MdtInstallPath = 'C:\Apps\MDT'
+        $MdtInstallPath = 'C:\Apps\MDT',
+
+        [Parameter()]
+        [string]
+        $ProductKey = 'eval',
+
+        [Parameter()]
+        [bool]
+        $InstallWindowsFeatures = $false
     )
 
     Import-DscResource -ModuleName PSDesiredStateConfiguration
@@ -96,11 +104,9 @@ Configuration ConfigurationManagerDeployment
         AdkSetupExePath        = $AdkSetupExePath
         AdkWinPeSetupPath      = $AdkWinPeSetupPath
         MdtMsiPath             = $MdtMsiPath
-        InstallWindowsFeatures = $true
+        InstallWindowsFeatures = $InstallWindowsFeatures
         WindowsFeatureSource   = 'C:\Windows\WinSxS'
         SccmRole               = $Roles
-        AddWindowsFirewallRule = $true
-        FirewallProfile        = 'Domain', 'Private'
         LocalAdministrators    = $LocalAdministrators
         DomainCredential       = $DomainCredential
         AdkInstallPath         = $AdkInstallPath
@@ -137,7 +143,7 @@ Configuration ConfigurationManagerDeployment
         IniFilePath               = 'C:\SetupFiles'
         Action                    = 'InstallPrimarySite'
         CDLatest                  = $false
-        ProductID                 = 'eval'
+        ProductID                 = $ProductKey
         SiteCode                  = $SiteCode
         SiteName                  = $SiteName
         SMSInstallDir             = $ConfigManagerPath
@@ -150,7 +156,14 @@ Configuration ConfigurationManagerDeployment
         JoinCeip                  = $false
         MobileDeviceLanguage      = $false
         SQLServerName             = $SqlServerName
-        DatabaseName              = if ($DatabaseInstance) {"$DatabaseInstance\CM_$SiteCode"} else {"CM_$SiteCode"}
+        DatabaseName              = if ($DatabaseInstance)
+        {
+            "$DatabaseInstance\CM_$SiteCode"
+        }
+        else
+        {
+            "CM_$SiteCode"
+        }
         CloudConnector            = $false
         SAActive                  = $true
         CurrentBranch             = $true

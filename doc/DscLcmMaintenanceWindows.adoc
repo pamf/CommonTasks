@@ -10,12 +10,12 @@
 
 
 [[dscyml_dsclcmmaintenancewindows_abstract]]
-.{YmlCategory} defines maintenance windows in which DSC is running in the “ApplyAndAutoCorrect” mode.
+.{YmlCategory} defines maintenance windows in which DSC is running in the `ApplyAndAutoCorrect` mode.
 
 
 [cols="1,3a" options="autowidth" caption=]
 |===
-| Source         | https://github.com/dsccommunity/CommonTasks/tree/dev/CommonTasks/DscResources/DscLcmMaintenanceWindows
+| Source         | https://github.com/dsccommunity/CommonTasks/tree/main/source/DSCResources/DscLcmMaintenanceWindows
 | DSC Resource   | https://docs.microsoft.com/en-us/powershell/module/psdesiredstateconfiguration[PSDesiredStateConfiguration],
                    https://github.com/dsccommunity/xPSDesiredStateConfiguration[xPSDesiredStateConfiguration]
 | Documentation  | https://dsccommunity.org/blog/dsc-maintenance-windows/[Realizing maintenance windows with DSC]
